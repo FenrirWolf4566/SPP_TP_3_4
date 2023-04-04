@@ -36,4 +36,15 @@ public class GrayLevelFilter implements IFilter {
         imgOut.setRGB(x, y, newRgb);
     }
     
+
+    static public void main(String[] args) throws Exception {
+        ImageFilteringEngine engine = new ImageFilteringEngine();
+        engine.loadImage("TEST_IMAGES/15226222451_5fd668d81a_c.jpg");
+        engine.applyFilter(new GrayLevelFilter());
+        engine.writeOutPngImage("TEST_IMAGES/test_grayfilterfilter.png");
+      } // EndMain
+    
+
 }
+
+
