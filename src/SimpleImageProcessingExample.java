@@ -1,3 +1,4 @@
+package src;
 /**
  * SimpleImageProcessingExample.java
  * 
