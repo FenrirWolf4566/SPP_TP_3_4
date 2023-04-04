@@ -16,8 +16,9 @@ public class ExampleFilter extends FilterUtils   {
     int red = arrRgb[0];
     int green = arrRgb[1];
     int blue = arrRgb[2];
-    // computing new color from extracted components
-    int newRgb = rgbToInt(red, green, blue); // rotating RGB values
+
+
+    int newRgb = ( ( (green << 8) | blue ) << 8 ) | red ;
     imgOut.setRGB(x, y, newRgb);
   }
 

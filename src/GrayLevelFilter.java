@@ -38,7 +38,10 @@ public class GrayLevelFilter extends FilterUtils {
         int green = arrRgb[1];
         int blue = arrRgb[2];
 
+        // FILTER COMPUTATION HERE
         int gray = (int) ((red + green + blue) / 3);
+
+
         // computing new color from extracted components
         int newRgb = rgbToInt(gray, gray, gray);
         imgOut.setRGB(x, y, newRgb);
