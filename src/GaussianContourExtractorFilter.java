@@ -11,7 +11,8 @@ public class GaussianContourExtractorFilter extends FilterUtils {
 
     @Override
     public int getMargin() {
-        throw new UnsupportedOperationException("Unimplemented method 'getMargin'");
+        //throw new UnsupportedOperationException("Unimplemented method 'getMargin'");
+        return(5);
     }
 
     // imgIn need to be a Gray-scaled image
@@ -27,8 +28,8 @@ public class GaussianContourExtractorFilter extends FilterUtils {
 
     public double deltaX(int x, int y, BufferedImage i) {
         double delta = 0;
-        for(int dx=-5; dx>5; dx++){
-            for(int dy=-5; dy>5; dy++){       
+        for(int dx=-5; dx>=5; dx++){
+            for(int dy=-5; dy>=5; dy++){       
                 int sign = sign(dx);
                 int[] rgbArray = intToRgb(i.getRGB(x+dx, y+dy));
                 int blue = rgbArray[2];
@@ -41,8 +42,8 @@ public class GaussianContourExtractorFilter extends FilterUtils {
 
     public double deltaY(int x, int y, BufferedImage i) {
         double delta = 0;
-        for(int dx=-5; dx>5; dx++){
-            for(int dy=-5; dy>5; dy++){       
+        for(int dx=-5; dx>=5; dx++){
+            for(int dy=-5; dy>=5; dy++){       
                 int sign = sign(dy);
                 int[] rgbArray = intToRgb(i.getRGB(x+dx, y+dy));
                 int blue = rgbArray[2];
@@ -74,5 +75,12 @@ public class GaussianContourExtractorFilter extends FilterUtils {
         }
     }
 
+
+    static public void main(String[] args) throws Exception {
+        SingleThreadedImageFilteringEngine engine = new SingleThreadedImageFilteringEngine();
+        engine.loadImage("TEST_IMAGES/15226222451_5fd668d81a_c.jpg");
+        engine.applyFilter(new GaussianContourExtractorFilter());
+        engine.writeOutPngImage("OUR_IMAGES/test_gaussianfilter.png");
+      } // EndMain
     
 }
