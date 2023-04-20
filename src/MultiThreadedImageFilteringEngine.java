@@ -1,7 +1,9 @@
 package src;
+import java.awt.List;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
@@ -44,6 +46,52 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
 
   @Override
   public void applyFilter(IFilter someFilter) {
+    int width = img.getWidth();
+    int height = img.getHeight();
+    int step = height / workerCount;
+
+    // create cyclic barrier for synchronization
+    CyclicBarrier barrier = new CyclicBarrier(workerCount + 1);
+
+    // create worker threads
+    ArrayList<Thread> workers = new ArrayList<Thread>();
+    for (int i = 0; i < workerCount; i++) {
+        int startY = i * step;
+        int endY = (i == workerCount - 1) ? height : startY + step;
+        Thread worker = new Thread(() -> {
+            for (int y = startY; y < endY; y++) {
+                for (int x = 0; x < width; x++) {
+                    someFilter.applyFilterAtPoint(x, y, img, img);
+                }
+            }
+            try {
+                barrier.await();
+            } catch (InterruptedException | BrokenBarrierException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        });
+        workers.add(worker);
+    }
+
+    // distribute work and start worker threads
+    for (int i = 0; i < workerCount; i++) {
+        Thread worker = workers.get(i);
+        int startY = i * step;
+        int endY = (i == workerCount - 1) ? height : startY + step;
+        worker.start();
+    }
+
+    // wait for worker threads to complete
+    try {
+        barrier.await();
+    } catch (InterruptedException | BrokenBarrierException e) {
+        Thread.currentThread().interrupt();
+        return;
+    }
+}
+
+
     // creating new image
     BufferedImage outImg = new BufferedImage(img.getWidth(),
     img.getHeight(),

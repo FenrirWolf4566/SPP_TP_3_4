@@ -22,4 +22,11 @@ public class ExampleFilter extends FilterUtils   {
     imgOut.setRGB(x, y, newRgb);
   }
 
+  static public void main(String[] args) throws Exception {
+    IImageFilteringEngine engine = new SingleThreadedImageFilteringEngine();
+    engine.loadImage("TEST_IMAGES/15226222451_5fd668d81a_c.jpg");
+    engine.applyFilter(new ExampleFilter());
+    engine.writeOutPngImage("TEST_IMAGES/test_examplefilter.png");
+  } // EndMain
+
 }
