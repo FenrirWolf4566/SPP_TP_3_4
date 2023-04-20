@@ -1,4 +1,4 @@
-package JUNIT_TESTS;
+package src.test;
 
 import src.*;
 
