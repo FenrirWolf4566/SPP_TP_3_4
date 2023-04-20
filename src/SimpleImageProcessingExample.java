@@ -43,5 +43,4 @@ public class SimpleImageProcessingExample {
     ImageIO.write(outImg, "png", f);
     
   } // EndMain
-
 } // EndClass SimpleImageProcessingExample

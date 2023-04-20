@@ -55,5 +55,4 @@ public class SingleThreadedImageFilteringEngine implements IImageFilteringEngine
     engine.applyFilter(new GaussianContourExtractorFilter());
     engine.writeOutPngImage("OUR_IMAGES/test_singlethread.png");
   } // EndMain
-
 }
