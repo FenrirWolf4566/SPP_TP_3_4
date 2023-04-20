@@ -32,14 +32,14 @@
  ┃ ┃ ┣ 📜MultiThreadedImageFilteringEngine.java
  ┃ ┃ ┗ 📜SingleThreadedImageFilteringEngine.java
  ┃ ┣ 📂filters                                       # Filters related
- ┃ ┃ ┣ 📜ExampleFilter.java
+ ┃ ┃ ┣ 📜ExampleFilter.java                          # Filter given in the TP
  ┃ ┃ ┣ 📜FilterUtils.java
  ┃ ┃ ┣ 📜GaussianContourExtractorFilter.java
  ┃ ┃ ┣ 📜GrayLevelFilter.java
  ┃ ┃ ┗ 📜IFilter.java
  ┃ ┣ 📂runner                                        # Main classes that run the program
  ┃ ┃ ┣ 📜PerformanceAnalysis.java
- ┃ ┃ ┗ 📜SimpleImageProcessingExample.java
+ ┃ ┃ ┗ 📜SimpleImageProcessingExample.java           # Execution example given in the TP
  ┃ ┗ 📂test                                          # Unit tests
  ┃ ┃ ┗ 📜FiltersTests.java
  ┣ 📜ESIR_SPP_TP_3_4_New_2023.pdf
@@ -47,7 +47,25 @@
  ```
 # 2. Code explanation
 
-## TODO
+We made sure that the code was as clear and readable as possible.
+
+**The code is self-explanatory and commented where necessary. In this section, we will only describe some notes that explain our decisions :**
+
+1. **Part 1: The single-thread engine and filters** :
+   - To implement the filters, we had to often use the RGB values of the pixels. And since the value was encoded in an `int`, it was time-consuming to extract the RGB values. To solve this problem, we created a utility class `FilterUtils` that contains methods to extract the RGB values of a pixel. This class extends the `IFilter` class. This is why all our filters extend the `FilterUtils` class.
+   - In each filter and engine implementation, we added a main method to test the class.
+2. **Part 2: The multi-thread engine** :
+   - To share the work between threads we split the image by group of rows. Each thread is responsible for a group of rows. 
+   - We make sure that if the number of rows is not divisible by the number of threads, the last thread will have more rows to process.
+   - We also make sure that the number of threads is not greater than the number of rows.
+   - For concurrency, we used a barrier to synchronize the threads. The barrier is used to block the main thread until all the threads have finished processing the image.
+3. **Part 3: The analysis of the performance** :
+   - The `PerformanceAnalysis` class is used to generate the data for the performance analysis. It computes the average of 10 runs for each filter and each image with a confidence interval of 95%. The results are printed in the console as a markdown table.
+   - The table is then used by the `graph_from_results.ipynb` Jupyter notebook to generate the images of the graphs shown below.
+4. **Unit tests of the filters** :
+   - To test the filters, we created a `FiltersTests` class using JUnit. Here we perform unit tests on the filters. What we do is a comparison between the output of the filter and the expected output image. To do this we only use the single-thread engine.
+   - Then we also want to test the multi-thread engine. To do this, we compare the output of the multi-thread engine with the output of the single-thread engine (already tested before). We do this for each filter and each image. We also test the multi-thread engine with different numbers of threads.
+
 
 # 3. Performance Analysis
 

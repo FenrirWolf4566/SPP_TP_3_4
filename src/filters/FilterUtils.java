@@ -13,5 +13,4 @@ public abstract class FilterUtils implements IFilter {
     rgbArray[2] = (rgb) & 0x000000FF;
     return rgbArray;
   }
-
 }

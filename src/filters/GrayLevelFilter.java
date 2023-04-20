@@ -57,8 +57,6 @@ public class GrayLevelFilter extends FilterUtils {
         engine.applyFilter(new GrayLevelFilter());
         engine.writeOutPngImage("OUR_IMAGES/test_grayfilter.png");
       } // EndMain
-    
-
 }
 
 

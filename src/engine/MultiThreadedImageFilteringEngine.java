@@ -55,16 +55,17 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
         BufferedImage.TYPE_INT_RGB);
     int width = img.getWidth();
     int height = img.getHeight();
-    int step = height / workerCount;
+    int threadCount = Math.min(workerCount, height);
+    int step = height / threadCount;
 
     // create cyclic barrier for synchronization
-    CyclicBarrier barrier = new CyclicBarrier(workerCount + 1);
+    CyclicBarrier barrier = new CyclicBarrier(threadCount + 1);
 
     // create worker threads
     ArrayList<Thread> workers = new ArrayList<Thread>();
-    for (int i = 0; i < workerCount; i++) {
+    for (int i = 0; i < threadCount; i++) {
       int startY = i * step;
-      int endY = (i == workerCount - 1) ? height : startY + step; // make sure if it's not divisible by k, the last
+      int endY = (i == threadCount - 1) ? height : startY + step; // make sure if it's not divisible by k, the last
                                                                   // worker gets the rest
       Thread worker = new Thread(() -> {
         for (int y = startY; y < endY; y++) {
@@ -83,7 +84,7 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
     }
 
     // distribute work and start worker threads
-    for (int i = 0; i < workerCount; i++) {
+    for (int i = 0; i < threadCount; i++) {
       Thread worker = workers.get(i);
       worker.start();
     }
