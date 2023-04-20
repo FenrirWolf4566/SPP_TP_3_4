@@ -118,7 +118,7 @@ public class PerformanceAnalysis {
 
     double marginError = CONFIDENCE_95 * stdDev / Math.sqrt(n);
 
-    return String.format("%.2f ± %.2f", mean, marginError);
+    return String.format("%.0f ± %.0f", mean, marginError);
   }
 
 }

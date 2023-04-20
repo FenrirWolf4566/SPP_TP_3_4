@@ -95,17 +95,17 @@ Where :
 
 | Engine              | GrayLevelFilter | GaussianContourExtractorFilter |
 | ------------------- | --------------- | ------------------------------ |
-| Single Thread       | 80ms            | 19679ms                        |
-| Multi Thread (k=1)  | 80ms            | 19532ms                        |
-| Multi Thread (k=2)  | 53ms            | 10382ms                        |
-| Multi Thread (k=3)  | 51ms            | 8019ms                         |
-| Multi Thread (k=4)  | 43ms            | 6683ms                         |
-| Multi Thread (k=5)  | 38ms            | 5858ms                         |
-| Multi Thread (k=6)  | 35ms            | 5191ms                         |
-| Multi Thread (k=7)  | 35ms            | 5005ms                         |
-| Multi Thread (k=8)  | 31ms            | 4931ms                         |
-| Multi Thread (k=9)  | 33ms            | 4917ms                         |
-| Multi Thread (k=10) | 33ms            | 4916ms                         |
+| Single Thread       | 103 ± 15ms      | 23478 ± 402ms                  |
+| Multi Thread (k=1)  | 100 ± 6ms       | 23832 ± 456ms                  |
+| Multi Thread (k=2)  | 66 ± 6ms        | 12769 ± 234ms                  |
+| Multi Thread (k=3)  | 49 ± 2ms        | 8779 ± 56ms                    |
+| Multi Thread (k=4)  | 41 ± 2ms        | 6682 ± 375ms                   |
+| Multi Thread (k=5)  | 36 ± 2ms        | 4731 ± 38ms                    |
+| Multi Thread (k=6)  | 33 ± 3ms        | 4566 ± 10ms                    |
+| Multi Thread (k=7)  | 31 ± 3ms        | 4238 ± 27ms                    |
+| Multi Thread (k=8)  | 25 ± 2ms        | 4079 ± 27ms                    |
+| Multi Thread (k=9)  | 29 ± 2ms        | 4114 ± 33ms                    |
+| Multi Thread (k=10) | 31 ± 3ms        | 4114 ± 20ms                    |
 
 **Graphic representation of the results :**
 
@@ -132,14 +132,14 @@ The computation time decreases very quickly with the number of threads. But it t
 
 | Image size                               | GrayLevelFilter | GaussianContourExtractorFilter |
 | ---------------------------------------- | --------------- | ------------------------------ |
-| 15226222451_75d515f540_o.jpg (n=2073600) | 42ms            | 6624ms                         |
-| 15226222451_a49b1a624b_h.jpg (n=1440000) | 31ms            | 4670ms                         |
-| 15226222451_5fd668d81a_c.jpg (n=360000)  | 8ms             | 1216ms                         |
-| 15226222451_5fd668d81a_z.jpg (n=230400)  | 4ms             | 795ms                          |
-| 15226222451_5fd668d81a.jpg (n=140500)    | 3ms             | 487ms                          |
-| 15226222451_5fd668d81a_n.jpg (n=57280)   | 1ms             | 202ms                          |
-| 15226222451_5fd668d81a_m.jpg (n=32160)   | 0ms             | 117ms                          |
-| 15226222451_5fd668d81a_t.jpg (n=5600)    | 0ms             | 19ms                           |
+| 15226222451_75d515f540_o.jpg (n=2073600) | 41 ± 2ms        | 4986 ± 30ms                    |
+| 15226222451_a49b1a624b_h.jpg (n=1440000) | 28 ± 1ms        | 3527 ± 69ms                    |
+| 15226222451_5fd668d81a_c.jpg (n=360000)  | 8 ± 1ms         | 872 ± 17ms                     |
+| 15226222451_5fd668d81a_z.jpg (n=230400)  | 5 ± 0ms         | 622 ± 57ms                     |
+| 15226222451_5fd668d81a.jpg (n=140500)    | 3 ± 0ms         | 370 ± 14ms                     |
+| 15226222451_5fd668d81a_n.jpg (n=57280)   | 2 ± 0ms         | 171 ± 13ms                     |
+| 15226222451_5fd668d81a_m.jpg (n=32160)   | 1 ± 0ms         | 98 ± 5ms                       |
+| 15226222451_5fd668d81a_t.jpg (n=5600)    | 1 ± 0ms         | 20 ± 2ms                       |
 
 ![speed comparison per image size on the same number of threads (k=4)](doc/size_gray.png)
 ![speed comparison per image size on the same number of threads (k=4)](doc/size_contour.png)
@@ -162,5 +162,5 @@ For the second filter, the `GaussianContourExtractorFilter` takes more time to c
 # 4. Challenges & Limitations
 
 1. The time's benchmarks depend on the computer's performance. The results may vary from one computer to another.
-2. If we want to run the analysis, it takes a lot of time since we are running multiple times to compute the average. It takes about 5-8 minutes for 10 runs. This was a little bit annoying for trying different things.
+2. If we want to run the analysis, it takes a lot of time since we are running multiple times to compute the average. It takes about 15-20 minutes for 10 runs. This was a little bit annoying for trying different things.
 
