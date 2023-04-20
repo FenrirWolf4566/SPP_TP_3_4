@@ -28,8 +28,11 @@ public class GaussianContourExtractorFilter extends FilterUtils {
 
     public double deltaX(int x, int y, BufferedImage i) {
         double delta = 0;
-        for(int dx=-5; dx>=5; dx++){
-            for(int dy=-5; dy>=5; dy++){       
+        for(int dx=-5; dx<=5; dx++){
+            for(int dy=-5; dy<=5; dy++){   
+                if (x+dx < 0 || x+dx >= i.getWidth() || y+dy < 0 || y+dy >= i.getHeight()) {
+                    continue;
+                }     
                 int sign = sign(dx);
                 int[] rgbArray = intToRgb(i.getRGB(x+dx, y+dy));
                 int blue = rgbArray[2];
@@ -42,8 +45,11 @@ public class GaussianContourExtractorFilter extends FilterUtils {
 
     public double deltaY(int x, int y, BufferedImage i) {
         double delta = 0;
-        for(int dx=-5; dx>=5; dx++){
-            for(int dy=-5; dy>=5; dy++){       
+        for(int dx=-5; dx<=5; dx++){
+            for(int dy=-5; dy<=5; dy++){     
+                if (x+dx < 0 || x+dx >= i.getWidth() || y+dy < 0 || y+dy >= i.getHeight()) {
+                    continue;
+                } 
                 int sign = sign(dy);
                 int[] rgbArray = intToRgb(i.getRGB(x+dx, y+dy));
                 int blue = rgbArray[2];
