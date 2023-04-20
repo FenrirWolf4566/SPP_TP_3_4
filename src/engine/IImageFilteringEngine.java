@@ -1,4 +1,4 @@
-package src;
+package src.engine;
 /**
  * IImageFilteringEngine.java
  * 
@@ -9,6 +9,8 @@ package src;
  */
 
 import java.awt.image.*;
+
+import src.filters.IFilter;
 
 /**
  * @author Francois Taiani   <francois.taiani@irisa.fr>

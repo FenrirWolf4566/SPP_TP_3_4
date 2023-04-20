@@ -1,6 +1,9 @@
-package src;
+package src.filters;
 
 import java.awt.image.BufferedImage;
+
+import src.engine.IImageFilteringEngine;
+import src.engine.SingleThreadedImageFilteringEngine;
 
 public class GrayLevelFilter extends FilterUtils {
 

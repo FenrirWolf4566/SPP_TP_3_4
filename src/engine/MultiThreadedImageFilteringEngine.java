@@ -1,7 +1,11 @@
-package src;
+package src.engine;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+
+import src.filters.GaussianContourExtractorFilter;
+import src.filters.IFilter;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;

@@ -1,6 +1,9 @@
 package src.test;
 
 import src.*;
+import src.engine.IImageFilteringEngine;
+import src.engine.SingleThreadedImageFilteringEngine;
+import src.filters.GrayLevelFilter;
 
 import org.junit.*;
 import java.util.*;

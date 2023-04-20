@@ -1,4 +1,4 @@
-package src;
+package src.filters;
 
 public abstract class FilterUtils implements IFilter {
 

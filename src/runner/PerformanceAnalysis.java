@@ -1,8 +1,18 @@
-package src;
+package src.runner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import src.engine.IImageFilteringEngine;
+import src.engine.MultiThreadedImageFilteringEngine;
+import src.engine.SingleThreadedImageFilteringEngine;
+import src.filters.GaussianContourExtractorFilter;
+import src.filters.GrayLevelFilter;
+import src.filters.IFilter;
 
 public class PerformanceAnalysis {
   public static void main(String[] args) {
-    // part1();
+    part1();
     part2();
   }
 
@@ -35,7 +45,7 @@ public class PerformanceAnalysis {
     IFilter filterGray = new GrayLevelFilter();
     IFilter filterContour = new GaussianContourExtractorFilter();
 
-    IImageFilteringEngine multi4 = new MultiThreadedImageFilteringEngine(16);
+    IImageFilteringEngine multi4 = new MultiThreadedImageFilteringEngine(4);
 
     String[] images = new String[] {
         "TEST_IMAGES/15226222451_75d515f540_o.jpg", // 1920 * 1080= 2073600
@@ -63,7 +73,7 @@ public class PerformanceAnalysis {
     System.out.println("| ------------ | --------------- | ------------------------------ |");
 
     for (int i = 0; i < images.length; i++) {
-      System.out.print("| "+ images[i].split("/")[1] +" (n=" + sizes[i] + ") | ");
+      System.out.print("| " + images[i].split("/")[1] + " (n=" + sizes[i] + ") | ");
       System.out.print(perfOf(multi4, images[i], filterGray) + " | ");
       System.out.println(perfOf(multi4, images[i], filterContour) + " |");
     }
@@ -71,8 +81,8 @@ public class PerformanceAnalysis {
   }
 
   public static String perfOf(IImageFilteringEngine engine, String imgPath, IFilter filter) {
-    long sum = 0;
     int numberOfRuns = 10;
+    List<Long> times = new ArrayList<Long>();
     for (int i = 0; i < numberOfRuns; i++) {
       try {
         engine.loadImage(imgPath);
@@ -81,9 +91,34 @@ public class PerformanceAnalysis {
       }
       long startTime = System.currentTimeMillis();
       engine.applyFilter(filter);
-      sum += System.currentTimeMillis() - startTime;
+      long endTime = System.currentTimeMillis();
+      times.add(endTime - startTime);
     }
-    long avg = sum / numberOfRuns;
-    return avg + "ms";
+    return confidenceInterval(times) + "ms";
   }
+
+  /**
+   * @param times the list of durations of the runs (in ms)
+   * @return a string representing the confidence interval at 95% of the mean
+   * @note format is "mean ± interval"
+   */
+  public static String confidenceInterval(List<Long> times) {
+    int n = times.size();
+    if (n == 0)
+      return "No data";
+
+    final float CONFIDENCE_95 = 1.96f;
+
+    double mean = times.stream().mapToLong(Long::longValue).average().orElse(0.0);
+    double stdDev = 0.0;
+    for (long time : times) {
+      stdDev += Math.pow(time - mean, 2);
+    }
+    stdDev = Math.sqrt(stdDev / n);
+
+    double marginError = CONFIDENCE_95 * stdDev / Math.sqrt(n);
+
+    return String.format("%.2f ± %.2f", mean, marginError);
+  }
+
 }
