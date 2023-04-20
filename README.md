@@ -10,10 +10,10 @@
 
 - [1. Project structure](#1-project-structure)
 - [2. Code explanation](#2-code-explanation)
-  - [TODO](#todo)
 - [3. Performance Analysis](#3-performance-analysis)
-  - [Speed comparison per number of threads on the same image](#speed-comparison-per-number-of-threads-on-the-same-image)
-  - [Speed comparison per image size on the same number of threads (k=4)](#speed-comparison-per-image-size-on-the-same-number-of-threads-k4)
+  - [3.1. Speed comparison per number of threads on the same image](#31-speed-comparison-per-number-of-threads-on-the-same-image)
+  - [3.2. Speed comparison per image size on the same number of threads (k=4)](#32-speed-comparison-per-image-size-on-the-same-number-of-threads-k4)
+- [4. Challenges \& Limitations](#4-challenges--limitations)
 
 
 # 1. Project structure
