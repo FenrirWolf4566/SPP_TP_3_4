@@ -49,11 +49,7 @@ public class GrayLevelFilter extends FilterUtils {
     
 
     static public void main(String[] args) throws Exception {
-<<<<<<< HEAD
         IImageFilteringEngine engine = new SingleThreadedImageFilteringEngine();
-=======
-        SingleThreadedImageFilteringEngine engine = new SingleThreadedImageFilteringEngine();
->>>>>>> e3a81f9c0c24b640d58158631b12e1a94676311b
         engine.loadImage("TEST_IMAGES/15226222451_5fd668d81a_c.jpg");
         engine.applyFilter(new GrayLevelFilter());
         engine.writeOutPngImage("OUR_IMAGES/test_grayfilter.png");
