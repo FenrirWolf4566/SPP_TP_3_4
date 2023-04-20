@@ -1,12 +1,11 @@
 package src;
+
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine {
   private BufferedImage img;
@@ -45,6 +44,11 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
 
   @Override
   public void applyFilter(IFilter someFilter) {
+
+    // creating new image
+    BufferedImage outImg = new BufferedImage(img.getWidth(),
+        img.getHeight(),
+        BufferedImage.TYPE_INT_RGB);
     int width = img.getWidth();
     int height = img.getHeight();
     int step = height / workerCount;
@@ -55,86 +59,47 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
     // create worker threads
     ArrayList<Thread> workers = new ArrayList<Thread>();
     for (int i = 0; i < workerCount; i++) {
-        int startY = i * step;
-        int endY = (i == workerCount - 1) ? height : startY + step;
-        Thread worker = new Thread(() -> {
-            for (int y = startY; y < endY; y++) {
-                for (int x = 0; x < width; x++) {
-                    someFilter.applyFilterAtPoint(x, y, img, img);
-                }
-            }
-            try {
-                barrier.await();
-            } catch (InterruptedException | BrokenBarrierException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
-        });
-        workers.add(worker);
+      int startY = i * step;
+      int endY = (i == workerCount - 1) ? height : startY + step; // make sure if it's not divisible by k, the last
+                                                                  // worker gets the rest
+      Thread worker = new Thread(() -> {
+        for (int y = startY; y < endY; y++) {
+          for (int x = 0; x < width; x++) {
+            someFilter.applyFilterAtPoint(x, y, img, outImg);
+          }
+        }
+        try {
+          barrier.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
+          Thread.currentThread().interrupt();
+          return;
+        }
+      });
+      workers.add(worker);
     }
 
     // distribute work and start worker threads
     for (int i = 0; i < workerCount; i++) {
-        Thread worker = workers.get(i);
-        int startY = i * step;
-        int endY = (i == workerCount - 1) ? height : startY + step;
-        worker.start();
+      Thread worker = workers.get(i);
+      worker.start();
     }
 
     // wait for worker threads to complete
     try {
-        barrier.await();
+      barrier.await();
     } catch (InterruptedException | BrokenBarrierException e) {
-        Thread.currentThread().interrupt();
-        return;
+      Thread.currentThread().interrupt();
+      return;
     }
-}
-
-
-    // creating new image
-    BufferedImage outImg = new BufferedImage(img.getWidth(),
-    img.getHeight(),
-    BufferedImage.TYPE_INT_RGB);
-
-    CyclicBarrier barrier = new CyclicBarrier(workerCount);
-
-    ExecutorService executor = Executors.newFixedThreadPool(workerCount);
-    Object lock = new Object();
-
-    for (int i = 0; i < workerCount; i++) {
-        executor.submit(() -> {
-            synchronized (lock) {
-              System.out.println("Thread " + Thread.currentThread().getId() + " is running");
-            }
-            try {
-                // wait for other threads to reach the barrier point
-                barrier.await();
-            } catch (InterruptedException | BrokenBarrierException e) {
-                e.printStackTrace();
-            }
-
-            // continue with the task once all threads have reached the barrier point
-        });
-    }
-
-    executor.shutdown();
-
-
-    // // generating new image from original
-    // for (int x = 0; x < img.getWidth(); x++) {
-    //   for (int y = 0; y < img.getHeight(); y++) {
-    //     someFilter.applyFilterAtPoint(x, y, img, outImg);
-    //   } // EndFor y
-    // } // EndFor x
 
     img = outImg;
   }
 
   static public void main(String[] args) throws Exception {
-    IImageFilteringEngine engine = new MultiThreadedImageFilteringEngine(4);
+    IImageFilteringEngine engine = new MultiThreadedImageFilteringEngine(16);
     engine.loadImage("TEST_IMAGES/15226222451_5fd668d81a_c.jpg");
-    engine.applyFilter(new ExampleFilter());
-    engine.writeOutPngImage("TEST_IMAGES/tmp.png");
+    engine.applyFilter(new GaussianContourExtractorFilter());
+    engine.writeOutPngImage("OUR_IMAGES/test_multithread.png");
   } // EndMain
 
 }

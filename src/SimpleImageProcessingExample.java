@@ -10,7 +10,6 @@ package src;
 
 import javax.imageio.ImageIO;
 import java.awt.image.*;
-import java.awt.Color ;
 import java.io.File;
 
 /**

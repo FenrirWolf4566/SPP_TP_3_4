@@ -50,10 +50,10 @@ public class SingleThreadedImageFilteringEngine implements IImageFilteringEngine
   }
 
   static public void main(String[] args) throws Exception {
-    SingleThreadedImageFilteringEngine engine = new SingleThreadedImageFilteringEngine();
+    IImageFilteringEngine engine = new SingleThreadedImageFilteringEngine();
     engine.loadImage("TEST_IMAGES/15226222451_5fd668d81a_c.jpg");
-    engine.applyFilter(new ExampleFilter());
-    engine.writeOutPngImage("TEST_IMAGES/tmp.png");
+    engine.applyFilter(new GaussianContourExtractorFilter());
+    engine.writeOutPngImage("OUR_IMAGES/test_singlethread.png");
   } // EndMain
 
 }
