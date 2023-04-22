@@ -41,7 +41,8 @@ public class SingleThreadedImageFilteringEngine implements IImageFilteringEngine
   @Override
   public void applyFilter(IFilter someFilter) {
     // creating new image
-    BufferedImage outImg = new BufferedImage(img.getWidth(),
+    BufferedImage outImg = new BufferedImage(
+        img.getWidth(),
         img.getHeight(),
         BufferedImage.TYPE_INT_RGB);
     // generating new image from original
@@ -50,7 +51,13 @@ public class SingleThreadedImageFilteringEngine implements IImageFilteringEngine
         someFilter.applyFilterAtPoint(x, y, img, outImg);
       } // EndFor y
     } // EndFor x
+    //########################
+    // SOME CHANGE (CONTOUR)
+    //########################
     img = outImg;
+    int margin = someFilter.getMargin();
+    BufferedImage croppedImage = img.getSubimage(margin, margin, img.getWidth() - (2 * margin), img.getHeight() - (2 * margin));
+    img = croppedImage;
   }
 
   static public void main(String[] args) throws Exception {

@@ -6,14 +6,8 @@ import src.engine.SingleThreadedImageFilteringEngine;
 
 public class GaussianContourExtractorFilter extends FilterUtils {
 
-    /**
-     * Le probleme vient des dx et dy qui doivent être les coordonnées des voisins du pixel traité
-     * Il faut faire attention puisque l'imgOut est de dimension réduite par rapport à imgIn
-     */
-
     @Override
     public int getMargin() {
-        //throw new UnsupportedOperationException("Unimplemented method 'getMargin'");
         return(5);
     }
 
@@ -82,7 +76,6 @@ public class GaussianContourExtractorFilter extends FilterUtils {
             return -1;
         }
     }
-
 
     static public void main(String[] args) throws Exception {
         SingleThreadedImageFilteringEngine engine = new SingleThreadedImageFilteringEngine();
