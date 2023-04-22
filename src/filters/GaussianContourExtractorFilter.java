@@ -62,7 +62,8 @@ public class GaussianContourExtractorFilter extends FilterUtils {
     }
 
     public int resultPixel(double norm){
-        int cast = 255 - (int)(norm/2);
+        // Cast à l'arrondis supérieur !
+        int cast = Math.round((255 - Math.round(norm/2)));
         int result = Math.max(0, cast);
         return result;
     }

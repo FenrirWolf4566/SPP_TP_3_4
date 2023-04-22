@@ -106,12 +106,33 @@ public class FiltersTests {
         for (int x = 0; x < testImage.getWidth(); x++) {
             for (int y = 0; y < testImage.getHeight(); y++) {
                 if (testImage.getRGB(x, y) != verifImage.getRGB(x, y)) {
+
+                    /*
+                    // Debug
+                    // Test
+                    int testRGB = testImage.getRGB(x, y);
+                    int verifRGB = verifImage.getRGB(x, y);
+                    int[] test = intToRgb(testRGB);
+                    int[] verif = intToRgb(verifRGB);
+
+                    System.out.println("x = "+x+" | y = "+y);
+                    System.out.println("test  | r = "+test[0]+" | g = "+test[1]+" | b = "+test[2]);
+                    System.out.println("verif | r = "+verif[0]+" | g = "+verif[1]+" | b = "+verif[2]);
+                    */
                     return false; // Images differ at this pixel
                 }
             }
         }
         return true;
     } // EndMethod compareBufferedImages
+
+    public int[] intToRgb(int rgb) {
+        int[] rgbArray = new int[3];
+        rgbArray[0] = (rgb >> 16) & 0x000000FF;
+        rgbArray[1] = (rgb >> 8) & 0x000000FF;
+        rgbArray[2] = (rgb) & 0x000000FF;
+        return rgbArray;
+      }
 
 
 }
